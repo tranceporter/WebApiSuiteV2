@@ -53,10 +53,10 @@ namespace WebAPISuite.Models
         {
         }
 
-        static ApplicationDbContext()
-        {
-            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
-        }
+        //static ApplicationDbContext()
+        //{
+        //    Database.SetInitializer<ApplicationDbContext>(new AppDbInitializer());
+        //}
 
         public static ApplicationDbContext Create()
         {

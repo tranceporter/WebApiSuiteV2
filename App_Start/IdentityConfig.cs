@@ -108,7 +108,7 @@ namespace WebAPISuite.Models
     // This is useful if you do not want to tear down the database each time you run the application.
     // public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     // This example shows you how to create a new database if the Model changes
-    public class ApplicationDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext> 
+    public class AppDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext> 
     {
         protected override void Seed(ApplicationDbContext context) {
             InitializeIdentityForEF(context);
@@ -119,8 +119,9 @@ namespace WebAPISuite.Models
         public static void InitializeIdentityForEF(ApplicationDbContext db) {
             var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
-            const string name = "admin";
-            const string password = "Invitat1on$";
+
+            const string name = "admin@example.com";
+            const string password = "Admin@123456";
             const string roleName = "Admin";
 
             //Create Role Admin if it does not exist
