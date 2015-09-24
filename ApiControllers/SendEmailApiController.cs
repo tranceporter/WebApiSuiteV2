@@ -1,5 +1,7 @@
 ﻿using SendGrid;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
@@ -7,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using WebAPISuite.Models;
 using WebAPISuite.Providers;
 
 namespace WebAPISuite.ApiControllers
@@ -18,6 +21,22 @@ namespace WebAPISuite.ApiControllers
         public HttpResponseMessage Test()
         {
             return Request.CreateResponse(HttpStatusCode.OK, "This is working!");
+        }
+
+        [HttpGet]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        public HttpResponseMessage GetClientSettings([FromUri]string clientName)
+        {
+            using (var clientContext = new ClientContext())
+            {
+                var client = clientContext.Clients.SingleOrDefault(c => c.Name.Equals(clientName, System.StringComparison.InvariantCultureIgnoreCase));
+                if (client == null || client.ClientSettings == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { client.ClientSettings.EnableFileUpload, client.Phone, });
+            }
         }
 
         [HttpPost]
@@ -40,25 +59,64 @@ namespace WebAPISuite.ApiControllers
             stringbuilder.AppendLine(string.Format("Phone: {0}", provider.FormData["phone"]));
             stringbuilder.AppendLine(string.Format("Message: {0}", provider.FormData["message"]));
 
-            // Create the email object first, then add the properties.
-            SendGridMessage myMessage = new SendGridMessage();
-            myMessage.AddTo("shreyas.zanpure@gmail.com");
-            myMessage.AddTo("mw@martinwrightdesign.com");
-            myMessage.From = new MailAddress(provider.FormData["email"], provider.FormData["name"]);
-            myMessage.Subject = string.Format("{0} wants to get in touch with you!", provider.FormData["name"]);
-            myMessage.Html = stringbuilder.ToString().Replace("\r\n", "<br/>");
-
-            foreach (var file in provider.Files)
+            var clientName = provider.FormData["clientName"];
+            if (string.IsNullOrWhiteSpace(clientName))
             {
-                myMessage.AddAttachment(new MemoryStream(file.FileBytes), file.FileName);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
 
-            var transportWeb = new Web("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");
+            using (var clientContext = new ClientContext())
+            {
+                var client = clientContext.Clients.SingleOrDefault(c => c.Name.Equals(clientName, System.StringComparison.InvariantCultureIgnoreCase));
+                if (client == null || client.ClientSettings == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
 
-            // Send the email.
-            await transportWeb.DeliverAsync(myMessage);
+                var transportWeb = new Web("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");
+
+                var message = CreateSendGridMessage(client.Email, provider.FormData["email"], provider.FormData["name"], stringbuilder.ToString().Replace("\r\n", "<br/>"), 
+                    provider.Files, client.ClientSettings);
+
+                await transportWeb.DeliverAsync(message);
+
+                if (client.ClientSettings.AutoReplyToCustomer)
+                {
+                    message = CreateSendGridMessage(provider.FormData["email"], client.Email, client.Name, "Thank you for contacting us! We will be in touch with you shortly.", provider.Files, client.ClientSettings, true);
+                    await transportWeb.DeliverAsync(message);
+                }
+            }
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        private SendGridMessage CreateSendGridMessage(string emailTo, string emailFrom, string name, string message, List<UploadedFile> files, ClientSetting clientSettings, bool autoReply = false)
+        {
+            // Create the email object first, then add the properties.
+            SendGridMessage myMessage = new SendGridMessage();
+
+            myMessage.AddTo(emailTo);
+
+            myMessage.From = new MailAddress(emailFrom, name);
+
+            myMessage.Subject = string.IsNullOrWhiteSpace(clientSettings.SubjectLine) ?
+                autoReply ? 
+                "Thank you for contacting us" :
+                string.Format("{0} wants to get in touch with you!", name) :
+                clientSettings.SubjectLine;
+
+            myMessage.Html = message;
+
+            if (clientSettings.EnableFileUpload && !autoReply)
+            {
+                foreach (var file in files)
+                {
+                    myMessage.AddAttachment(new MemoryStream(file.FileBytes), file.FileName);
+                }
+            }
+
+            return myMessage;
+            
         }
     }
 }

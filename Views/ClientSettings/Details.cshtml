@@ -1,0 +1,134 @@
+﻿@model WebAPISuite.Models.ClientSetting
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ClientSetting</h4>
+    <hr />
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.Client.Name)
+        </div>
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.Client.Name)
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.SubjectLine)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.SubjectLine)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.AutoReplyToCustomer)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.AutoReplyToCustomer)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.EnableFileUpload)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.EnableFileUpload)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.GoogleAdwordsEnabled)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.GoogleAdwordsEnabled)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.GoogleConversionId)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.GoogleConversionId)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.GoogleConversionLanguage)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.GoogleConversionLanguage)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.GoogleConversionFormat)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.GoogleConversionFormat)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.GoogleConversionColour)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.GoogleConversionColour)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.GoogleConversionLabel)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.GoogleConversionLabel)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.GoogleConversionValue)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.GoogleConversionValue)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.GoogleConversionCurrency)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.GoogleConversionCurrency)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.GoogleRemarketingOnly)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.GoogleRemarketingOnly)
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ClientId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

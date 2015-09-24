@@ -191,7 +191,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\WebAPISuiteV2_log.ldf" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -206,7 +205,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="App_Data\WebAPISuiteV2" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -225,6 +223,11 @@
     <Content Include="Views\Clients\Details.cshtml" />
     <Content Include="Views\Clients\Edit.cshtml" />
     <Content Include="Views\Clients\Index.cshtml" />
+    <Content Include="Views\ClientSettings\Create.cshtml" />
+    <Content Include="Views\ClientSettings\Delete.cshtml" />
+    <Content Include="Views\ClientSettings\Details.cshtml" />
+    <Content Include="Views\ClientSettings\Edit.cshtml" />
+    <Content Include="Views\ClientSettings\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -278,6 +281,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
+    <Compile Include="Controllers\ClientSettingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
@@ -285,11 +289,24 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201509232154032_NewStuff.cs" />
-    <Compile Include="Migrations\201509232154032_NewStuff.Designer.cs">
-      <DependentUpon>201509232154032_NewStuff.cs</DependentUpon>
+    <Compile Include="Migrations\AppDbContext\201509241903519_AppDbInit.cs" />
+    <Compile Include="Migrations\AppDbContext\201509241903519_AppDbInit.Designer.cs">
+      <DependentUpon>201509241903519_AppDbInit.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\AppDbContext\Configuration.cs" />
+    <Compile Include="Migrations\ClientDbContext\201509241904489_ClientInit.cs" />
+    <Compile Include="Migrations\ClientDbContext\201509241904489_ClientInit.Designer.cs">
+      <DependentUpon>201509241904489_ClientInit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ClientDbContext\201509242058231_ClientColumnFix.cs" />
+    <Compile Include="Migrations\ClientDbContext\201509242058231_ClientColumnFix.Designer.cs">
+      <DependentUpon>201509242058231_ClientColumnFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ClientDbContext\201509242220118_ClientAutoReply.cs" />
+    <Compile Include="Migrations\ClientDbContext\201509242220118_ClientAutoReply.Designer.cs">
+      <DependentUpon>201509242220118_ClientAutoReply.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ClientDbContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ClientModels.cs" />
@@ -300,11 +317,22 @@
     <Compile Include="Providers\MultipartFormDataMemoryStreamProvider.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509232154032_NewStuff.resx">
-      <DependentUpon>201509232154032_NewStuff.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\AppDbContext\201509241903519_AppDbInit.resx">
+      <DependentUpon>201509241903519_AppDbInit.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ClientDbContext\201509241904489_ClientInit.resx">
+      <DependentUpon>201509241904489_ClientInit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ClientDbContext\201509242058231_ClientColumnFix.resx">
+      <DependentUpon>201509242058231_ClientColumnFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ClientDbContext\201509242220118_ClientAutoReply.resx">
+      <DependentUpon>201509242220118_ClientAutoReply.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

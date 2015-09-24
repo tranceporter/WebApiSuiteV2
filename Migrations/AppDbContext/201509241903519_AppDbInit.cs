@@ -1,9 +1,9 @@
-namespace WebAPISuite.Migrations
+namespace WebAPISuite.Migrations.AppDbContext
 {
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class NewStuff : DbMigration
+    public partial class AppDbInit : DbMigration
     {
         public override void Up()
         {

@@ -10,112 +10,112 @@ using WebAPISuite.Models;
 
 namespace WebAPISuite.Controllers
 {
-    public class ClientsController : Controller
+    public class ClientSettingsController : Controller
     {
         private ClientContext db = new ClientContext();
 
-        // GET: Clients
+        // GET: ClientSettings
         public ActionResult Index()
         {
-            var clients = db.Clients.Include(c => c.ClientSettings);
-            return View(clients.ToList());
+            var clientSettings = db.ClientSettings.Include(c => c.Client);
+            return View(clientSettings.ToList());
         }
 
-        // GET: Clients/Details/5
+        // GET: ClientSettings/Details/5
         public ActionResult Details(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Client client = db.Clients.Find(id);
-            if (client == null)
+            ClientSetting clientSetting = db.ClientSettings.Find(id);
+            if (clientSetting == null)
             {
                 return HttpNotFound();
             }
-            return View(client);
+            return View(clientSetting);
         }
 
-        // GET: Clients/Create
+        // GET: ClientSettings/Create
         public ActionResult Create()
         {
+            ViewBag.ClientId = new SelectList(db.Clients, "Id", "Name");
             return View();
         }
 
-        // POST: Clients/Create
+        // POST: ClientSettings/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Email,AddressLine1,AddressLine2,Town,County,Country,Phone")] Client client)
+        public ActionResult Create([Bind(Include = "ClientId,SubjectLine,AutoReplyToCustomer,EnableFileUpload,GoogleAdwordsEnabled,GoogleConversionId,GoogleConversionLanguage,GoogleConversionFormat,GoogleConversionColour,GoogleConversionLabel,GoogleConversionValue,GoogleConversionCurrency,GoogleRemarketingOnly")] ClientSetting clientSetting)
         {
             if (ModelState.IsValid)
             {
-                client.Id = Guid.NewGuid();
-                db.Clients.Add(client);
+                db.ClientSettings.Add(clientSetting);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Id = new SelectList(db.ClientSettings, "ClientId", "SubjectLine", client.Id);
-            return View(client);
+            ViewBag.ClientId = new SelectList(db.Clients, "Id", "Name", clientSetting.ClientId);
+            return View(clientSetting);
         }
 
-        // GET: Clients/Edit/5
+        // GET: ClientSettings/Edit/5
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Client client = db.Clients.Find(id);
-            if (client == null)
+            ClientSetting clientSetting = db.ClientSettings.Find(id);
+            if (clientSetting == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Id = new SelectList(db.ClientSettings, "ClientId", "SubjectLine", client.Id);
-            return View(client);
+            ViewBag.ClientId = new SelectList(db.Clients, "Id", "Name", clientSetting.ClientId);
+            return View(clientSetting);
         }
 
-        // POST: Clients/Edit/5
+        // POST: ClientSettings/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Email,AddressLine1,AddressLine2,Town,County,Country,Phone")] Client client)
+        public ActionResult Edit([Bind(Include = "ClientId,SubjectLine,AutoReplyToCustomer,EnableFileUpload,GoogleAdwordsEnabled,GoogleConversionId,GoogleConversionLanguage,GoogleConversionFormat,GoogleConversionColour,GoogleConversionLabel,GoogleConversionValue,GoogleConversionCurrency,GoogleRemarketingOnly")] ClientSetting clientSetting)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(client).State = EntityState.Modified;
+                db.Entry(clientSetting).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Id = new SelectList(db.ClientSettings, "ClientId", "SubjectLine", client.Id);
-            return View(client);
+            ViewBag.ClientId = new SelectList(db.Clients, "Id", "Name", clientSetting.ClientId);
+            return View(clientSetting);
         }
 
-        // GET: Clients/Delete/5
+        // GET: ClientSettings/Delete/5
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Client client = db.Clients.Find(id);
-            if (client == null)
+            ClientSetting clientSetting = db.ClientSettings.Find(id);
+            if (clientSetting == null)
             {
                 return HttpNotFound();
             }
-            return View(client);
+            return View(clientSetting);
         }
 
-        // POST: Clients/Delete/5
+        // POST: ClientSettings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Client client = db.Clients.Find(id);
-            db.Clients.Remove(client);
+            ClientSetting clientSetting = db.ClientSettings.Find(id);
+            db.ClientSettings.Remove(clientSetting);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

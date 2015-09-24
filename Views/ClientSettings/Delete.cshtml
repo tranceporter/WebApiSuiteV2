@@ -1,0 +1,129 @@
+﻿@model WebAPISuite.Models.ClientSetting
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ClientSetting</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Client.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Client.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SubjectLine)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubjectLine)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoReplyToCustomer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoReplyToCustomer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableFileUpload)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableFileUpload)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoogleAdwordsEnabled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoogleAdwordsEnabled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoogleConversionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoogleConversionId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoogleConversionLanguage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoogleConversionLanguage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoogleConversionFormat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoogleConversionFormat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoogleConversionColour)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoogleConversionColour)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoogleConversionLabel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoogleConversionLabel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoogleConversionValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoogleConversionValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoogleConversionCurrency)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoogleConversionCurrency)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoogleRemarketingOnly)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoogleRemarketingOnly)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default pull-right" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

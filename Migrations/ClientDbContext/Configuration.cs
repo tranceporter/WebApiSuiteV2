@@ -1,18 +1,19 @@
-namespace WebAPISuite.Migrations
+namespace WebAPISuite.Migrations.ClientDbContext
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<WebAPISuite.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<WebAPISuite.Models.ClientContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            MigrationsDirectory = @"Migrations\ClientDbContext";
         }
 
-        protected override void Seed(WebAPISuite.Models.ApplicationDbContext context)
+        protected override void Seed(WebAPISuite.Models.ClientContext context)
         {
             //  This method will be called after migrating to the latest version.
 

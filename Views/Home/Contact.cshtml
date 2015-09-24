@@ -59,7 +59,7 @@
                             <textarea class="form-control" rows="6" name="message" id="message" placeholder="Please enter your message"></textarea>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div id="fileUploadDiv" style="display:none;" class="form-group">
                         <label class="col-sm-2 control-label"></label>
                         <div class="col-sm-10">
                             <span class="btn btn-success fileinput-button">
@@ -85,9 +85,13 @@
             </div>
         </div>
     </div>
+    @Scripts.Render("~/bundles/bootstrap")
     <script>
         $(document).ready(function () {
             var uploadedFiles = [];
+            var clientSettings;
+
+            getClientSettings();
 
             $('#send').click(function () {
                 var data = new FormData();
@@ -102,6 +106,7 @@
                 data.append("email", $('#email').val());
                 data.append("phone", $('#phone').val());
                 data.append("message", $('#message').val());
+                data.append("clientName", 'Shreyas');
 
                 $.ajax({
                     type: "POST",
@@ -129,6 +134,16 @@
                     });
                 }
             });
+
+            function getClientSettings() {
+                $.get('http://tritron.co.uk/api/SendEmailApi/GetClientSettings?clientName=Shreyas')
+                    .done(function (response) {
+                        clientSettings = response;
+                        $('#fileUploadDiv').toggle(clientSettings ? clientSettings.EnableFileUpload : false);
+                    }).fail(function () {
+                        clientSettings = null;
+                    });
+            }
         });
     </script>
 </body>
