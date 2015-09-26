@@ -152,7 +152,9 @@
                         processData: false,  // tell jQuery not to process the data
                         contentType: false,   // tell jQuery not to set contentType
                         success: function (response) {
-                            reportGoogleAdwordsConversion();
+                            if (clientSettings.GoogleAdwordsEnabled) {
+                                reportGoogleAdwordsConversion();
+                            }
                         },
                         error: function () {
                             toastr.error('Oops. Seems like there was an error contacting us. Please retry.');
@@ -195,7 +197,10 @@
                     .done(function (response) {
                         clientSettings = response;
                         $('#fileUploadDiv').toggle(clientSettings ? clientSettings.EnableFileUpload : false);
-                        setupGoogleAdwordsConversion();
+                        if (clientSettings.GoogleAdwordsEnabled) {
+                            setupGoogleAdwordsConversion();
+                        }
+                        
                         spinner.stop();
                     }).fail(function () {
                         clientSettings = null;
