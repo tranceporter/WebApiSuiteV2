@@ -35,7 +35,19 @@ namespace WebAPISuite.ApiControllers
                     return Request.CreateResponse(HttpStatusCode.InternalServerError);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { client.ClientSettings.EnableFileUpload, client.Phone, });
+                var settings = client.ClientSettings;
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { 
+                    settings.EnableFileUpload, 
+                    settings.GoogleAdwordsEnabled,
+                    settings.GoogleConversionId,
+                    settings.GoogleConversionColour,
+                    settings.GoogleConversionCurrency,
+                    settings.GoogleConversionValue,
+                    settings.GoogleConversionLabel,
+                    settings.GoogleConversionLanguage,
+                    settings.GoogleRemarketingOnly
+                });
             }
         }
 
@@ -51,6 +63,11 @@ namespace WebAPISuite.ApiControllers
             // Read the file and form data.
             var provider = new MultipartFormDataMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
+
+            if (string.IsNullOrWhiteSpace(provider.FormData["email"]))
+            {
+                return Request.CreateResponse(HttpStatusCode.PreconditionFailed);
+            }
 
             // Extract the fields from the form data.
             var stringbuilder = new StringBuilder();

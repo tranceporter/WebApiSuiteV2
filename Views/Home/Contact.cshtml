@@ -16,6 +16,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+    <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion_async.js">
+    </script>
 </head>
 <body>
     <style>
@@ -25,17 +27,29 @@
             display: inline-block;
         }
 
-            .fileinput-button input {
-                position: absolute;
-                top: 0;
-                right: 0;
-                margin: 0;
-                opacity: 0;
-                -ms-filter: 'alpha(opacity=0)';
-                font-size: 200px;
-                direction: ltr;
-                cursor: pointer;
-            }
+        .fileinput-button input {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            opacity: 0;
+            -ms-filter: 'alpha(opacity=0)';
+            font-size: 200px;
+            direction: ltr;
+            cursor: pointer;
+        }
+
+        .error{
+            color: red
+        }
+
+        .form-group.required .control-label:after {
+            color: #d00;
+            content: "*";
+            position: absolute;
+            margin-left: 8px;
+            top: 7px;
+        }
     </style>
     <div class="container">
         <div class="row">
@@ -47,7 +61,7 @@
                             <input type="text" class="form-control" id="name" name="name" placeholder="First & Last Name" value="" autofocus>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="email" class="col-sm-2 control-label">Email</label>
                         <div class="col-sm-10">
                             <input type="email" class="form-control" id="email" name="email" placeholder="example@domain.com" value="" required>
@@ -65,7 +79,7 @@
                             <textarea class="form-control" rows="6" name="message" id="message" placeholder="Please enter your message"></textarea>
                         </div>
                     </div>
-                    <div id="fileUploadDiv" style="display:none;" class="form-group">
+                    <div id="fileUploadDiv" class="form-group">
                         <label class="col-sm-2 control-label"></label>
                         <div class="col-sm-10">
                             <span class="btn btn-success fileinput-button">
@@ -74,90 +88,147 @@
                                 <!-- The file input field used as target for the file upload widget -->
                                 <input id="fileupload" type="file" multiple="">
                             </span>
-                            <div id="files"></div>
+                            
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-10" id="files"></div>
                     </div>
                     <div class="form-group" style="margin-right:0;">
                         <div class="pull-right">
                             <input id="send" name="send" type="submit" value="Send" class="btn btn-success">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-sm-10 col-sm-offset-2">
-                            <span id="response"></span>
-                        </div>
+                    <div id="trap">
+                        <label for="botTrap">Leave blank</label>
+                        <input type="text" id="botTrap" name="botTrap" value="">
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    @*@Scripts.Render("~/bundles/bootstrap")*@
+
     <script>
         $(document).ready(function () {
             var uploadedFiles = [];
+            var uploadedFileNames = [];
             var clientSettings;
+
+            $('#fileUploadDiv').hide();
+            $('#trap').hide();
 
             var spinner = initSpin();
             getClientSettings();
 
             $('#formContainer').validate({
-                    submitHandler: function(form) {
-                        var data = new FormData();
+                submitHandler: function (form) {
+                    if ($('#botTrap').val() != '') {
+                        toastr.error('Are you a bot?');
+                        return;
+                    }
 
-                        if (uploadedFiles.length > 0) {
-                            for (i = 0; i < uploadedFiles.length; i++) {
-                                data.append("file" + i, uploadedFiles[i]);
-                            }
+                    var data = new FormData();
+
+                    if (uploadedFiles.length > 0) {
+                        for (i = 0; i < uploadedFiles.length; i++) {
+                            data.append("file" + i, uploadedFiles[i]);
                         }
+                    }
 
-                        data.append("name", $('#name').val());
-                        data.append("email", $('#email').val());
-                        data.append("phone", $('#phone').val());
-                        data.append("message", $('#message').val());
-                        data.append("clientName", 'Shreyas');
+                    data.append("name", $('#name').val());
+                    data.append("email", $('#email').val());
+                    data.append("phone", $('#phone').val());
+                    data.append("message", $('#message').val());
+                    data.append("clientName", 'Shreyas');
 
-                        spinner.spin($('#formContainer')[0]);
+                    spinner.spin($('#formContainer')[0]);
 
-                        $.ajax({
-                            type: "POST",
-                            url: '/api/SendEmailApi/SendEmail',
-                            data: data,
-                            enctype: 'multipart/form-data',
-                            processData: false,  // tell jQuery not to process the data
-                            contentType: false,   // tell jQuery not to set contentType
-                            success: function (response) {
-                                $('#formContainer').trigger("reset");
-                                toastr.success('Thank you for contacting us.');
-                            },
-                            error: function () {
-                                toastr.error('Oops. Seems like there was an error contacting us. Please retry.');
-                            },
-                            complete: function () {
-                                spinner.stop();
-                            }
-                        });
+                    $.ajax({
+                        type: "POST",
+                        url: 'http://elementalstudios.co.uk/api/SendEmailApi/SendEmail',
+                        data: data,
+                        enctype: 'multipart/form-data',
+                        processData: false,  // tell jQuery not to process the data
+                        contentType: false,   // tell jQuery not to set contentType
+                        success: function (response) {
+                            reportGoogleAdwordsConversion();
+                        },
+                        error: function () {
+                            toastr.error('Oops. Seems like there was an error contacting us. Please retry.');
+                        },
+                        complete: function () {
+                            spinner.stop();
+                        }
+                    });
                 }
             });
 
             $('#fileupload').change(function () {
                 var files = $(this)[0].files;
                 if (files) {
-                    $('#files').append('<br/>');
                     $.each(files, function (index, file) {
                         uploadedFiles.push(file);
-                        $('<p/>').text(file.name).appendTo('#files');
+                        uploadedFileNames.push(file.name);
+                        $('<div class="col-md-2 col-sm-3 alert alert-info" style="margin-right:10px;"></div>')
+                            .html(file.name + '<a style="text-decoration: none;" href="#" id="removeFile" data-filename=' + file.name + '>&nbsp; &nbsp;<i style="color:#333;" class="fa fa-times"></i></a>')
+                            .appendTo('#files');
                     });
                 }
             });
 
+            $('body').on('click', '#removeFile', function () {
+                if (uploadedFileNames) {
+                    var filename = $(this).attr('data-filename');
+                    var index = uploadedFileNames.indexOf(filename);
+                    if (index > -1) {
+                        uploadedFiles.splice(index, 1);
+                        uploadedFileNames.splice(index, 1);
+                        $(this).parent().remove();
+                    }
+                }
+            });
+
             function getClientSettings() {
+                spinner.spin($('#formContainer')[0]);
                 $.get('http://elementalstudios.co.uk/api/SendEmailApi/GetClientSettings?clientName=Shreyas')
                     .done(function (response) {
                         clientSettings = response;
                         $('#fileUploadDiv').toggle(clientSettings ? clientSettings.EnableFileUpload : false);
+                        setupGoogleAdwordsConversion();
+                        spinner.stop();
                     }).fail(function () {
                         clientSettings = null;
                     });
+            }
+
+            function setupGoogleAdwordsConversion() {
+                var w = window;
+                w.google_conversion_id = clientSettings.GoogleConversionId;
+                w.google_conversion_label = clientSettings.GoogleConversionLabel;
+                w.google_conversion_language = clientSettings.GoogleConversionLanguage;
+                w.google_conversion_color = clientSettings.GoogleConversionColour;
+                w.google_conversion_value = clientSettings.GoogleConversionValue;
+                w.google_conversion_currency = clientSettings.GoogleConversionCurrency;
+                w.google_remarketing_only = clientSettings.GoogleRemarketingOnly;
+            }
+
+            function reportGoogleAdwordsConversion() {
+                window.google_conversion_format = "3";
+                var opt = new Object();
+
+                opt.onload_callback = function () {
+                    $('#formContainer').trigger("reset");
+                    uploadedFiles = [];
+                    uploadedFileNames = [];
+                    $('#files').empty();
+                    toastr.success('Thank you for contacting us.');
+                }
+
+                var conv_handler = window['google_trackConversion'];
+                if (typeof (conv_handler) == 'function') {
+                    conv_handler(opt);
+                }
             }
 
             function initSpin() {
