@@ -85,9 +85,9 @@ namespace WebAPISuite.ApiControllers
             using (var clientContext = new ClientContext())
             {
                 var client = clientContext.Clients.SingleOrDefault(c => c.Name.Equals(clientName, System.StringComparison.InvariantCultureIgnoreCase));
-                if (client == null || client.ClientSettings == null)
+                if (client == null || string.IsNullOrWhiteSpace(client.Email) || client.ClientSettings == null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                    return Request.CreateResponse(HttpStatusCode.PreconditionFailed);
                 }
 
                 var transportWeb = new Web("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");
