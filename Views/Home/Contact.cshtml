@@ -11,13 +11,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.11.3.min.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
-    <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion_async.js">
-    </script>
 </head>
 <body>
     <style>
@@ -32,7 +25,7 @@
             top: 0;
             right: 0;
             margin: 0;
-            opacity: 0;
+            opacity: 0.5;
             -ms-filter: 'alpha(opacity=0)';
             font-size: 200px;
             direction: ltr;
@@ -50,33 +43,64 @@
             margin-left: 8px;
             top: 7px;
         }
+
+        .loadmask {
+            z-index: 100;
+            position: absolute;
+            top:0;
+            left:0;
+            width: 100%;
+            height: 100%;
+            zoom: 1;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .loadmask-msg {
+            z-index: 20001;
+            position: absolute;
+            top: 0;
+            left: 0;
+            line-height: 1; /* this enables us to center the label text relative to the spinner */
+        }
+
+        .masked {
+            overflow: hidden !important;
+        }
+        .masked-relative {
+            position: relative !important;
+        }
+        .masked-hidden {
+            visibility: hidden !important;
+        }
     </style>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <form class="form-horizontal" id="formContainer" role="form">
-                    <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="First & Last Name" value="" autofocus>
+                    <div id="inputDiv">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="First & Last Name" value="" autofocus>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group required">
-                        <label for="email" class="col-sm-2 control-label">Email</label>
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="example@domain.com" value="" required>
+                        <div class="form-group required">
+                            <label for="email" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="example@domain.com" value="" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone" class="col-sm-2 control-label">Phone</label>
-                        <div class="col-sm-10">
-                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="0123456789" value="">
+                        <div class="form-group">
+                            <label for="phone" class="col-sm-2 control-label">Phone</label>
+                            <div class="col-sm-10">
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="0123456789" value="">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="message" class="col-sm-2 control-label">Message</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" rows="6" name="message" id="message" placeholder="Please enter your message"></textarea>
+                        <div class="form-group">
+                            <label for="message" class="col-sm-2 control-label">Message</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" rows="6" name="message" id="message" placeholder="Please enter your message"></textarea>
+                            </div>
                         </div>
                     </div>
                     <div id="fileUploadDiv" class="form-group">
@@ -100,7 +124,7 @@
                             <input id="send" name="send" type="submit" value="Send" class="btn btn-success">
                         </div>
                     </div>
-                    <div id="trap">
+                    <div id="trap" style="visibility: hidden;">
                         <label for="botTrap">Leave blank</label>
                         <input type="text" id="botTrap" name="botTrap" value="">
                     </div>
@@ -108,7 +132,13 @@
             </div>
         </div>
     </div>
-
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.11.3.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+    <script src="http://www.googleadservices.com/pagead/conversion_async.js"></script>
+    <script src="http://cdn.rawgit.com/iloveitaly/jquery.loadmask.spin/master/jquery.loadmask.spin.js"></script>
     <script>
         $(document).ready(function () {
             var uploadedFiles = [];
@@ -116,9 +146,6 @@
             var clientSettings;
 
             $('#fileUploadDiv').hide();
-            $('#trap').hide();
-
-            var spinner = initSpin();
             getClientSettings();
 
             $('#formContainer').validate({
@@ -142,7 +169,7 @@
                     data.append("message", $('#message').val());
                     data.append("clientName", 'Shreyas');
 
-                    spinner.spin($('#formContainer')[0]);
+                    $('#inputDiv').mask();
 
                     $.ajax({
                         type: "POST",
@@ -160,7 +187,7 @@
                             toastr.error('Oops. Seems like there was an error contacting us. Please retry.');
                         },
                         complete: function () {
-                            spinner.stop();
+                            $('#inputDiv').unmask();
                         }
                     });
                 }
@@ -192,7 +219,7 @@
             });
 
             function getClientSettings() {
-                spinner.spin($('#formContainer')[0]);
+                $('#inputDiv').mask();
                 $.get('http://elementalstudios.co.uk/api/SendEmailApi/GetClientSettings?clientName=Shreyas')
                     .done(function (response) {
                         clientSettings = response;
@@ -201,7 +228,7 @@
                             setupGoogleAdwordsConversion();
                         }
                         
-                        spinner.stop();
+                        $('#inputDiv').unmask();
                     }).fail(function () {
                         clientSettings = null;
                     });
@@ -234,33 +261,6 @@
                 if (typeof (conv_handler) == 'function') {
                     conv_handler(opt);
                 }
-            }
-
-            function initSpin() {
-                var opts = {
-                      lines: 13 // The number of lines to draw
-                    , length: 28 // The length of each line
-                    , width: 14 // The line thickness
-                    , radius: 42 // The radius of the inner circle
-                    , scale: 0.3 // Scales overall size of the spinner
-                    , corners: 1 // Corner roundness (0..1)
-                    , color: '#000' // #rgb or #rrggbb or array of colors
-                    , opacity: 0.3 // Opacity of the lines
-                    , rotate: 0 // The rotation offset
-                    , direction: 1 // 1: clockwise, -1: counterclockwise
-                    , speed: 1 // Rounds per second
-                    , trail: 60 // Afterglow percentage
-                    , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-                    , zIndex: 2e9 // The z-index (defaults to 2000000000)
-                    , className: 'spinner' // The CSS class to assign to the spinner
-                    , top: '50%' // Top position relative to parent
-                    , left: '50%' // Left position relative to parent
-                    , shadow: false // Whether to render a shadow
-                    , hwaccel: false // Whether to use hardware acceleration
-                    , position: 'absolute' // Element positioning
-                }
-
-                return new Spinner(opts);
             }
         });
     </script>
