@@ -137,8 +137,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
-    <script src="http://www.googleadservices.com/pagead/conversion_async.js"></script>
     <script src="http://cdn.rawgit.com/iloveitaly/jquery.loadmask.spin/master/jquery.loadmask.spin.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             var uploadedFiles = [];
@@ -224,10 +224,6 @@
                     .done(function (response) {
                         clientSettings = response;
                         $('#fileUploadDiv').toggle(clientSettings ? clientSettings.EnableFileUpload : false);
-                        if (clientSettings.GoogleAdwordsEnabled) {
-                            setupGoogleAdwordsConversion();
-                        }
-                        
                         $('#inputDiv').unmask();
                     }).fail(function () {
                         clientSettings = null;
@@ -235,40 +231,39 @@
             }
 
             /* <![CDATA[ */
-            function setupGoogleAdwordsConversion() {
-                var w = window;
-                w.google_conversion_id = clientSettings.GoogleConversionId;
-                w.google_conversion_label = clientSettings.GoogleConversionLabel;
-                w.google_conversion_language = clientSettings.GoogleConversionLanguage;
-                w.google_conversion_color = clientSettings.GoogleConversionColour;
-                w.google_conversion_value = parseFloat(clientSettings.GoogleConversionValue);
-                w.google_conversion_currency = clientSettings.GoogleConversionCurrency;
-                w.google_remarketing_only = clientSettings.GoogleRemarketingOnly;
-            }
-
             function reportGoogleAdwordsConversion() {
-                window.google_conversion_format = "3";
-                var opt = new Object();
+                $.getScript('http://www.googleadservices.com/pagead/conversion_async.js', function () {
+                    var w = window;
+                    w.google_conversion_id = 973940740;
+                    w.google_conversion_label = "NwyTCJy2xVYQhNC00AM";
+                    w.google_conversion_language = "en";
+                    w.google_conversion_color = "ffffff";
+                    w.google_conversion_value = 1.00;
+                    w.google_conversion_currency = "GBP";
+                    w.google_remarketing_only = false;
+                    w.google_conversion_format = "3";
 
-                opt.onload_callback = function () {
-                    $('#formContainer').trigger("reset");
-                    uploadedFiles = [];
-                    uploadedFileNames = [];
-                    $('#files').empty();
-                    toastr.success('Thank you for contacting us.');
-                }
+                    var opt = new Object();
+                    opt.onload_callback = function () {
+                        $('#formContainer').trigger("reset");
+                        uploadedFiles = [];
+                        uploadedFileNames = [];
+                        $('#files').empty();
+                        toastr.success('Thank you for contacting us.');
+                    }
 
-                var conv_handler = window['google_trackConversion'];
-                if (typeof (conv_handler) == 'function') {
-                    conv_handler(opt);
-                }
+                    var conv_handler = w['google_trackConversion'];
+                    if (typeof (conv_handler) == 'function') {
+                        conv_handler(opt);
+                    }
+                });
             }
             /* ]]> */
         });
     </script>
     <noscript>
         <div style="display: inline">
-            <img height=1 width=1 border=0 src="http://www.googleadservices.com/pagead/conversion/976989505/?value=1.00&label=1A3KCKfJtggQwdru0QM&script=0">
+            <img height=1 width=1 border=0 src="http://www.googleadservices.com/pagead/conversion/973940740/?value=1.00&label=NwyTCJy2xVYQhNC00AM&script=0">
         </div>
     </noscript>
 </body>
