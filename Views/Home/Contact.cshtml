@@ -139,7 +139,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
     <script src="http://www.googleadservices.com/pagead/conversion_async.js"></script>
     <script src="http://cdn.rawgit.com/iloveitaly/jquery.loadmask.spin/master/jquery.loadmask.spin.js"></script>
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
             var uploadedFiles = [];
             var uploadedFileNames = [];
@@ -234,13 +234,14 @@
                     });
             }
 
+            /* <![CDATA[ */
             function setupGoogleAdwordsConversion() {
                 var w = window;
                 w.google_conversion_id = clientSettings.GoogleConversionId;
                 w.google_conversion_label = clientSettings.GoogleConversionLabel;
                 w.google_conversion_language = clientSettings.GoogleConversionLanguage;
                 w.google_conversion_color = clientSettings.GoogleConversionColour;
-                w.google_conversion_value = clientSettings.GoogleConversionValue;
+                w.google_conversion_value = parseFloat(clientSettings.GoogleConversionValue);
                 w.google_conversion_currency = clientSettings.GoogleConversionCurrency;
                 w.google_remarketing_only = clientSettings.GoogleRemarketingOnly;
             }
@@ -262,7 +263,13 @@
                     conv_handler(opt);
                 }
             }
+            /* ]]> */
         });
     </script>
+    <noscript>
+        <div style="display: inline">
+            <img height=1 width=1 border=0 src="http://www.googleadservices.com/pagead/conversion/976989505/?value=1.00&label=1A3KCKfJtggQwdru0QM&script=0">
+        </div>
+    </noscript>
 </body>
 </html>
