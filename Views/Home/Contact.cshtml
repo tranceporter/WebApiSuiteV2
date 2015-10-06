@@ -224,9 +224,10 @@
                     .done(function (response) {
                         clientSettings = response;
                         $('#fileUploadDiv').toggle(clientSettings ? clientSettings.EnableFileUpload : false);
-                        $('#inputDiv').unmask();
                     }).fail(function () {
                         clientSettings = null;
+                    }).always(function () {
+                        $('#inputDiv').unmask();
                     });
             }
 
