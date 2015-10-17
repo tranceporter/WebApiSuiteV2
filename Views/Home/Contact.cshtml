@@ -121,7 +121,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-2"></div>
-                        <div class="col-sm-10 alert alert-info" id="result"></div>
+                        <div class="col-sm-10 alert alert-info" style="display:none;" id="result"></div>
                     </div>
                     <div class="form-group" style="margin-right:0;">
                         <div class="pull-right">
@@ -150,7 +150,6 @@
             var clientSettings;
 
             $('#fileUploadDiv').hide();
-            $('#result').hide();
             getClientSettings();
 
             $('#formContainer').validate({
@@ -199,6 +198,10 @@
                         }
                     });
                 }
+            });
+
+            $('#fileupload').click(function () {
+                $(this).val('');
             });
 
             $('#fileupload').change(function () {
