@@ -210,8 +210,8 @@
                     $.each(files, function (index, file) {
                         uploadedFiles.push(file);
                         uploadedFileNames.push(file.name);
-                        $('<div class="col-md-2 col-sm-3 alert alert-info" style="margin-right:10px;"></div>')
-                            .html(file.name + '<a style="text-decoration: none;" href="#" id="removeFile" data-filename=' + file.name + '>&nbsp; &nbsp;<i style="color:#333;" class="fa fa-times"></i></a>')
+                        $('<div class="col-md-3 col-sm-4 alert alert-info" style="margin-right:10px;"></div>')
+                            .html(file.name + '<a style="text-decoration: none;" href="#" id="removeFile">&nbsp; &nbsp;<i style="color:#333;" class="fa fa-times"></i></a>')
                             .appendTo('#files');
                     });
                 }
@@ -219,7 +219,7 @@
 
             $('body').on('click', '#removeFile', function () {
                 if (uploadedFileNames) {
-                    var filename = $(this).attr('data-filename');
+                    var filename = $(this).parent().text().trim();
                     var index = uploadedFileNames.indexOf(filename);
                     if (index > -1) {
                         uploadedFiles.splice(index, 1);
