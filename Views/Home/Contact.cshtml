@@ -187,6 +187,9 @@
                             if (clientSettings.GoogleAdwordsEnabled) {
                                 reportGoogleAdwordsConversion();
                             }
+                            else {
+                                cleanup();
+                            }
                         },
                         error: function () {
                             $('#result').show();
@@ -242,6 +245,16 @@
                     });
             }
 
+            function cleanup() {
+                $('#formContainer').trigger("reset");
+                uploadedFiles = [];
+                uploadedFileNames = [];
+                $('#files').empty();
+                $('#result').show();
+                $('#result').html('Thank you for contacting us.');
+                //toastr.success('Thank you for contacting us.');
+            }
+
             /* <![CDATA[ */
             function reportGoogleAdwordsConversion() {
                 $.getScript('http://www.googleadservices.com/pagead/conversion_async.js', function () {
@@ -257,13 +270,7 @@
 
                     var opt = new Object();
                     opt.onload_callback = function () {
-                        $('#formContainer').trigger("reset");
-                        uploadedFiles = [];
-                        uploadedFileNames = [];
-                        $('#files').empty();
-                        $('#result').show();
-                        $('#result').html('Thank you for contacting us.');
-                        //toastr.success('Thank you for contacting us.');
+                        cleanup();
                     }
 
                     var conv_handler = w['google_trackConversion'];
