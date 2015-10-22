@@ -12,13 +12,21 @@
     <hr />
     <div class="col-md-12">
         <div class="col-md-3">
-            @Html.DisplayNameFor(model => model.Client.Name)
+            @Html.Label("ClientName")
         </div>
         <div class="col-md-9">
             @Html.DisplayFor(model => model.Client.Name)
         </div>
     </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.Label("ClientSettingName")
+        </div>
 
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.Name)
+        </div>
+    </div>
     <div class="col-md-12">
         <div class="col-md-3">
             @Html.DisplayNameFor(model => model.SubjectLine)
@@ -35,6 +43,24 @@
 
         <div class="col-md-9">
             @Html.DisplayFor(model => model.AutoReplyToCustomer)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.AutoReplySubjectLine)
+        </div>
+
+        <div class="col-md-9">
+            @Html.DisplayFor(model => model.AutoReplySubjectLine)
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.AutoReplyBody)
+        </div>
+
+        <div class="col-md-9">
+            @Html.Raw(Model.AutoReplyBody)
         </div>
     </div>
     <div class="col-md-12">

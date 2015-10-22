@@ -13,13 +13,22 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Client.Name)
+            @Html.Label("ClientName")
+        </th>
+        <th>
+            @Html.Label("ClientSettingName")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.SubjectLine)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AutoReplyToCustomer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AutoReplySubjectLine)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AutoReplyBody)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.EnableFileUpload)
@@ -60,10 +69,19 @@
             @Html.DisplayFor(modelItem => item.Client.Name)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.SubjectLine)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.AutoReplyToCustomer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AutoReplySubjectLine)
+        </td>
+        <td>
+            @Html.Raw(item.AutoReplyBody)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.EnableFileUpload)
@@ -96,9 +114,9 @@
             @Html.DisplayFor(modelItem => item.GoogleRemarketingOnly)
         </td>*@
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ClientId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ClientId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ClientId })
+            @Html.ActionLink("Edit", "Edit", new { id=item.ClientId, settingName=item.Name }) |
+            @Html.ActionLink("Details", "Details", new { id = item.ClientId, settingName = item.Name }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ClientId, settingName = item.Name })
         </td>
     </tr>
 }

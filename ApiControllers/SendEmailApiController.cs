@@ -25,7 +25,7 @@ namespace WebAPISuite.ApiControllers
 
         [HttpGet]
         [EnableCors(origins: "*", headers: "*", methods: "*")]
-        public HttpResponseMessage GetClientSettings([FromUri]string clientName)
+        public HttpResponseMessage GetClientSettings([FromUri]string clientName, string clientSettingName)
         {
             using (var clientContext = new ClientContext())
             {
@@ -35,7 +35,12 @@ namespace WebAPISuite.ApiControllers
                     return Request.CreateResponse(HttpStatusCode.InternalServerError);
                 }
 
-                var settings = client.ClientSettings;
+                var settings = clientContext.ClientSettings.FirstOrDefault(c => c.Name.Equals(clientSettingName, System.StringComparison.InvariantCultureIgnoreCase) && c.ClientId == client.Id);
+
+                if (settings == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { 
                     settings.EnableFileUpload, 
@@ -77,7 +82,8 @@ namespace WebAPISuite.ApiControllers
             stringbuilder.AppendLine(string.Format("Message: {0}", provider.FormData["message"]));
 
             var clientName = provider.FormData["clientName"];
-            if (string.IsNullOrWhiteSpace(clientName))
+            var clientSettingName = provider.FormData["clientSettingName"];
+            if (string.IsNullOrWhiteSpace(clientName) || string.IsNullOrWhiteSpace(clientSettingName))
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
@@ -85,21 +91,27 @@ namespace WebAPISuite.ApiControllers
             using (var clientContext = new ClientContext())
             {
                 var client = clientContext.Clients.SingleOrDefault(c => c.Name.Equals(clientName, System.StringComparison.InvariantCultureIgnoreCase));
-                if (client == null || string.IsNullOrWhiteSpace(client.Email) || client.ClientSettings == null)
+                if (client == null || client.ClientSettings == null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.PreconditionFailed);
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
+
+                var settings = clientContext.ClientSettings.FirstOrDefault(c => c.Name.Equals(clientSettingName, System.StringComparison.InvariantCultureIgnoreCase) && c.ClientId == client.Id);
+
+                if (settings == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
                 }
 
                 var transportWeb = new Web("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");
 
-                var message = CreateSendGridMessage(client.Email, provider.FormData["email"], provider.FormData["name"], stringbuilder.ToString().Replace("\r\n", "<br/>"), 
-                    provider.Files, client.ClientSettings);
+                var message = CreateSendGridMessage(client.Email, provider.FormData["email"], provider.FormData["name"], stringbuilder.ToString().Replace("\r\n", "<br/>"), provider.Files, settings);
 
                 await transportWeb.DeliverAsync(message);
 
-                if (client.ClientSettings.AutoReplyToCustomer)
+                if (settings.AutoReplyToCustomer)
                 {
-                    message = CreateSendGridMessage(provider.FormData["email"], client.Email, client.Name, "Thank you for contacting us! We will be in touch with you shortly.", provider.Files, client.ClientSettings, true);
+                    message = CreateSendGridMessage(provider.FormData["email"], client.Email, client.Name, settings.AutoReplyBody, provider.Files, settings, true);
                     await transportWeb.DeliverAsync(message);
                 }
             }
@@ -116,11 +128,7 @@ namespace WebAPISuite.ApiControllers
 
             myMessage.From = new MailAddress(emailFrom, name);
 
-            myMessage.Subject = string.IsNullOrWhiteSpace(clientSettings.SubjectLine) ?
-                autoReply ? 
-                "Thank you for contacting us" :
-                string.Format("{0} wants to get in touch with you!", name) :
-                clientSettings.SubjectLine;
+            myMessage.Subject = autoReply ? clientSettings.AutoReplySubjectLine : clientSettings.SubjectLine;
 
             myMessage.Html = message;
 

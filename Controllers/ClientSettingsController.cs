@@ -22,13 +22,14 @@ namespace WebAPISuite.Controllers
         }
 
         // GET: ClientSettings/Details/5
-        public ActionResult Details(Guid? id)
+        public ActionResult Details(Guid? id, string settingName)
         {
-            if (id == null)
+            if (string.IsNullOrWhiteSpace(settingName) || id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ClientSetting clientSetting = db.ClientSettings.Find(id);
+
+            ClientSetting clientSetting = db.ClientSettings.FirstOrDefault(c => c.Name.Equals(settingName, StringComparison.InvariantCultureIgnoreCase) && c.ClientId == id);
             if (clientSetting == null)
             {
                 return HttpNotFound();
@@ -48,7 +49,7 @@ namespace WebAPISuite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ClientId,SubjectLine,AutoReplyToCustomer,EnableFileUpload,GoogleAdwordsEnabled,GoogleConversionId,GoogleConversionLanguage,GoogleConversionFormat,GoogleConversionColour,GoogleConversionLabel,GoogleConversionValue,GoogleConversionCurrency,GoogleRemarketingOnly")] ClientSetting clientSetting)
+        public ActionResult Create([Bind(Include = "ClientId,SubjectLine,AutoReplyToCustomer,EnableFileUpload,GoogleAdwordsEnabled,GoogleConversionId,GoogleConversionLanguage,GoogleConversionFormat,GoogleConversionColour,GoogleConversionLabel,GoogleConversionValue,GoogleConversionCurrency,GoogleRemarketingOnly,Name,AutoReplySubjectLine,AutoReplyBody")] ClientSetting clientSetting)
         {
             if (ModelState.IsValid)
             {
@@ -62,13 +63,13 @@ namespace WebAPISuite.Controllers
         }
 
         // GET: ClientSettings/Edit/5
-        public ActionResult Edit(Guid? id)
+        public ActionResult Edit(Guid? id, string settingName)
         {
-            if (id == null)
+            if (string.IsNullOrWhiteSpace(settingName) || id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ClientSetting clientSetting = db.ClientSettings.Find(id);
+            ClientSetting clientSetting = db.ClientSettings.FirstOrDefault(c => c.Name.Equals(settingName, StringComparison.InvariantCultureIgnoreCase) && c.ClientId == id);
             if (clientSetting == null)
             {
                 return HttpNotFound();
@@ -82,7 +83,8 @@ namespace WebAPISuite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ClientId,SubjectLine,AutoReplyToCustomer,EnableFileUpload,GoogleAdwordsEnabled,GoogleConversionId,GoogleConversionLanguage,GoogleConversionFormat,GoogleConversionColour,GoogleConversionLabel,GoogleConversionValue,GoogleConversionCurrency,GoogleRemarketingOnly")] ClientSetting clientSetting)
+        [ValidateInput(false)]
+        public ActionResult Edit(ClientSetting clientSetting)
         {
             if (ModelState.IsValid)
             {
@@ -95,13 +97,13 @@ namespace WebAPISuite.Controllers
         }
 
         // GET: ClientSettings/Delete/5
-        public ActionResult Delete(Guid? id)
+        public ActionResult Delete(Guid? id, string settingName)
         {
-            if (id == null)
+            if (string.IsNullOrWhiteSpace(settingName) || id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ClientSetting clientSetting = db.ClientSettings.Find(id);
+            ClientSetting clientSetting = db.ClientSettings.FirstOrDefault(c => c.Name.Equals(settingName, StringComparison.InvariantCultureIgnoreCase) && c.ClientId == id);
             if (clientSetting == null)
             {
                 return HttpNotFound();
@@ -112,9 +114,9 @@ namespace WebAPISuite.Controllers
         // POST: ClientSettings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        public ActionResult DeleteConfirmed(Guid id, string settingName)
         {
-            ClientSetting clientSetting = db.ClientSettings.Find(id);
+            ClientSetting clientSetting = db.ClientSettings.FirstOrDefault(c => c.Name.Equals(settingName, StringComparison.InvariantCultureIgnoreCase) && c.ClientId == id);
             db.ClientSettings.Remove(clientSetting);
             db.SaveChanges();
             return RedirectToAction("Index");

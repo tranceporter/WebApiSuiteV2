@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace WebAPISuite.Models
 {
@@ -27,21 +28,34 @@ namespace WebAPISuite.Models
         public string Country { get; set; }
         public string Phone { get; set; }
 
-        public virtual ClientSetting ClientSettings { get; set; }
+        public virtual IEnumerable<ClientSetting> ClientSettings { get; set; }
+
+        public Client()
+        {
+            this.ClientSettings = new List<ClientSetting>();
+        }
     }
 
-    public class ClientSetting{
-
+    public class ClientSetting
+    {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [ForeignKey("Client")]
         public Guid ClientId {get; set;}
 
         [Required]
+        public string Name { get; set; }
+
+        [Required]
         public string SubjectLine { get; set; }
 
         [DefaultValue(true)]
         public bool AutoReplyToCustomer { get; set; }
+
+        public string AutoReplySubjectLine { get; set; }
+
+        [AllowHtml]
+        public string AutoReplyBody { get; set; }
 
         [DefaultValue(false)]
         public bool EnableFileUpload { get; set; }

@@ -17,7 +17,7 @@ namespace WebAPISuite.Controllers
         // GET: Clients
         public ActionResult Index()
         {
-            var clients = db.Clients.Include(c => c.ClientSettings);
+            var clients = db.Clients;
             return View(clients.ToList());
         }
 
@@ -57,7 +57,7 @@ namespace WebAPISuite.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Id = new SelectList(db.ClientSettings, "ClientId", "SubjectLine", client.Id);
+            ViewBag.Id = new SelectList(db.ClientSettings, "ClientId", "Name", client.Id);
             return View(client);
         }
 
@@ -73,7 +73,7 @@ namespace WebAPISuite.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Id = new SelectList(db.ClientSettings, "ClientId", "SubjectLine", client.Id);
+            ViewBag.Id = new SelectList(db.ClientSettings, "ClientId", "Name", client.Id);
             return View(client);
         }
 
@@ -90,7 +90,7 @@ namespace WebAPISuite.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Id = new SelectList(db.ClientSettings, "ClientId", "SubjectLine", client.Id);
+            ViewBag.Id = new SelectList(db.ClientSettings, "ClientId", "Name", client.Id);
             return View(client);
         }
 
@@ -116,6 +116,13 @@ namespace WebAPISuite.Controllers
         {
             Client client = db.Clients.Find(id);
             db.Clients.Remove(client);
+
+            List<ClientSetting> settings = db.ClientSettings.Where(c => c.ClientId == id).ToList();
+            foreach (var setting in settings)
+            {
+                db.ClientSettings.Remove(setting);
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
