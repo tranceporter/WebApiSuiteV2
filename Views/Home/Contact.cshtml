@@ -179,7 +179,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: 'http://localhost:55665//api/SendEmailApi/SendEmail',
+                        url: 'http://elementalstudios.co.uk/api/SendEmailApi/SendEmail',
                         data: data,
                         enctype: 'multipart/form-data',
                         processData: false,  // tell jQuery not to process the data
@@ -235,7 +235,7 @@
 
             function getClientSettings() {
                 $('#inputDiv').mask();
-                $.get('http://localhost:55665/api/SendEmailApi/GetClientSettings?clientName=Shreyas&clientSettingName=Shreyas')
+                $.get('http://elementalstudios.co.uk/api/SendEmailApi/GetClientSettings?clientName=Shreyas&clientSettingName=Shreyas')
                     .done(function (response) {
                         clientSettings = response;
                         $('#fileUploadDiv').toggle(clientSettings ? clientSettings.EnableFileUpload : false);
