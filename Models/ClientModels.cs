@@ -38,12 +38,12 @@ namespace WebAPISuite.Models
 
     public class ClientSetting
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [ForeignKey("Client")]
         public Guid ClientId {get; set;}
 
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
         public string Name { get; set; }
 
         [Required]
@@ -62,7 +62,7 @@ namespace WebAPISuite.Models
 
         [DefaultValue(false)]
         public bool GoogleAdwordsEnabled { get; set; }
-        public Int64 GoogleConversionId { get; set; }
+        public Int64? GoogleConversionId { get; set; }
         public string GoogleConversionLanguage { get; set; }
         public string GoogleConversionFormat { get; set; }
         public string GoogleConversionColour { get; set; }

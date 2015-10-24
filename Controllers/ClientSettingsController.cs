@@ -49,7 +49,7 @@ namespace WebAPISuite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ClientId,SubjectLine,AutoReplyToCustomer,EnableFileUpload,GoogleAdwordsEnabled,GoogleConversionId,GoogleConversionLanguage,GoogleConversionFormat,GoogleConversionColour,GoogleConversionLabel,GoogleConversionValue,GoogleConversionCurrency,GoogleRemarketingOnly,Name,AutoReplySubjectLine,AutoReplyBody")] ClientSetting clientSetting)
+        public ActionResult Create(ClientSetting clientSetting)
         {
             if (ModelState.IsValid)
             {
