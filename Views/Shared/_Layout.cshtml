@@ -3,12 +3,26 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
+    <title> Elemental Studios</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <style>
+        .navbar .nav,
+        .navbar .nav > li {
+            float: none;
+            display: inline-block;
+            *display: inline; /* ie7 fix */
+            *zoom: 1; /* hasLayout ie7 trigger */
+            vertical-align: top;
+        }
+
+        .navbar-collapse {
+            text-align: center;
+        }
+    </style>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
-<body>
+<body data-spy="scroll" data-offset="0" data-target="#navbar-main">
     <div class="container-fluid body-content">
         <div class="row" style="margin-bottom:20px;">
             <div class="col-md-12">
@@ -32,7 +46,7 @@
     </div>
 
     @RenderBody()
-   
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
