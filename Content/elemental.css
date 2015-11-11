@@ -1,0 +1,38 @@
+﻿@import url(https://fonts.googleapis.com/css?family=Raleway:400,700);
+body {
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #706a5b;
+}
+section {
+  border: 10px solid white;
+  border-bottom: none;
+  max-width: 100%;
+}
+.navbar-inverse {
+  background: transparent;
+  border: none;
+}
+.splash {
+  background: #af312a;
+  color: white;
+  height: 75vh;
+  min-height: 600px;
+  position: relative;
+}
+.splash h3 {
+  color: white;
+  font-size: 4em;
+  font-weight: bold;
+  position: absolute;
+  bottom: 0.5em;
+  right: 0.5em;
+}
+/*# sourceMappingURL=elemental.css.map */

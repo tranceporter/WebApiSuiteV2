@@ -33,7 +33,8 @@ namespace WebAPISuite
                       "~/Content/site.css",
                       "~/Content/Theme/animate-custom.css",
                       //"~/Content/Theme/icomoon.css",
-                      "~/Content/Theme/main.css"
+                      //"~/Content/Theme/main.css",
+                      "~/Content/elemental.css"
                       ));
         }
     }

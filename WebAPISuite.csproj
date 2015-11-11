@@ -195,6 +195,12 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\elemental.css">
+      <DependentUpon>elemental.less</DependentUpon>
+    </Content>
+    <Content Include="Content\elemental.min.css">
+      <DependentUpon>elemental.css</DependentUpon>
+    </Content>
     <Content Include="Content\Images\bg\divider1.jpg" />
     <Content Include="Content\Images\bg\divider2.jpg" />
     <Content Include="Content\Images\bg\divider3.jpg" />
@@ -225,6 +231,10 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="App_Data\WebAPISuiteV2" />
+    <Content Include="Content\elemental.less" />
+    <Content Include="Content\elemental.css.map">
+      <DependentUpon>elemental.css</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\elementalstudios.co.uk - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\FTP.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />

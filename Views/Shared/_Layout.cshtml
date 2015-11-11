@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Elemental Studios</title>
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    @*<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>*@
     <style>
         .navbar .nav,
         .navbar .nav > li {
@@ -23,7 +23,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body data-spy="scroll" data-offset="0" data-target="#navbar-main">
-    <div class="container-fluid body-content">
+    @*<div class="container-fluid body-content">
         <div class="row" style="margin-bottom:20px;">
             <div class="col-md-12">
                 @if (User.IsInRole("Admin"))
@@ -43,7 +43,7 @@
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
-    </div>
+    </div>*@
 
     @RenderBody()
 

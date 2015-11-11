@@ -1,0 +1,39 @@
+﻿@import url(https://fonts.googleapis.com/css?family=Raleway:400,700);
+
+//Elemental Colours
+@greylight: #C8C8C8;
+@red: #AF312A;
+@greydark: #706A5B;
+
+body {
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: @greydark;
+}
+section {
+    border: 10px solid white;
+    border-bottom: none;
+    max-width: 100%;
+}
+.navbar-inverse {
+    background: transparent;
+    border: none;
+}
+
+.splash {
+    background: @red;
+    color: white;
+    height: 75vh;
+    min-height: 600px;
+    position: relative;
+   h3 {
+        color: white;
+        font-size: 4em;
+        font-weight: bold;
+        position: absolute;
+        bottom: 0.5em;
+        right: 0.5em;
+    }
+}
